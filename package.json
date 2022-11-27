@@ -12,7 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.0",
+    "fs-extra": "^10.1.0",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.7",
     "replace-in-file": "^6.3.5",
-    "xml-formatter": "^2.6.1"
+    "xml-formatter": "^2.6.1",
+    "yaml": "^2.1.3"
   }
 }

@@ -1,7 +1,6 @@
 const util = require('util');
-const {regRep, androidPath, androidSrc} = require("./utils");
+const {regRep, androidPath, dataPath, yamls, src} = require("./utils");
 const path = require("path");
-const fs = require("fs/promises");
 const exec = util.promisify(require('child_process').exec);
 
 async function fileChanges() {
@@ -11,13 +10,22 @@ async function fileChanges() {
       '$1$2$1implementation "com.facebook.soloader:soloader:0.9.0+"\n',
       'soloader',
   );
-  // await fs.writeFile(
-  //     path.join(androidPath, 'local.properties'),
-  //     `sdk.dir=${process.env.ANDROID_HOME}`
-  // );
+}
+
+async function init() {
+  const name = yamls.app.name
+  const {stdout, stderr} = await exec(
+      `npx react-native init ${name} --template react-native-template-typescript`,
+  );
+  await exec(
+      `mv ./${name}/* . && rm -rf ./${name}`,
+  );
+  console.log('stdout:', stdout);
+  console.log('stderr:', stderr);
 }
 
 async function start() {
+  await init();
   const {stdout, stderr} = await exec(
       `git init .`,
   );

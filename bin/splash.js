@@ -1,12 +1,10 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const {regRep, androidPath, androidSrc} = require('./utils');
+const {regRep, androidPath, androidSrc, yamls, downloadFile, all_dirs} = require('./utils');
 const path = require('path');
 const prettifyXml = require('xml-formatter');
 
-const [apk, color = '009688'] = process.argv.slice(3);
-
-const pth = path.join(androidSrc, 'java', ...apk.split('.'));
+const pth = path.join(androidSrc, 'java', ...yamls.app.apk.split('.'));
 
 async function fileChanges() {
   await regRep(
@@ -66,10 +64,11 @@ async function fileChanges() {
 }
 
 async function splash() {
-  await exec('yarn add react-native-bootsplash');
+  await downloadFile(yamls.assets.splash, path.join(all_dirs.rn_images, 'splash.png'));
+  await exec('npm i react-native-bootsplash');
   const {stdout, stderr} =
-    await exec(`npx react-native generate-bootsplash assets/images/icon.png \\
-  --background-color=#${color} \\
+    await exec(`npx react-native generate-bootsplash assets/images/splash.png \\
+  --background-color=${yamls.colors.splash} \\
   --logo-width=100 \\
   --assets-path=assets \\
   --flavor=main`);

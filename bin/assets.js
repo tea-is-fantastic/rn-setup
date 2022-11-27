@@ -5,6 +5,7 @@ const path = require("path");
 const exec = util.promisify(require('child_process').exec);
 
 async function assets() {
+
   await fs.writeFile(path.join(src, 'react-native.config.js'), `
   module.exports = {
   project: {

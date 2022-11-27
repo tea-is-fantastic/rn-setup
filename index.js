@@ -1,22 +1,36 @@
 #!/usr/bin/env node
 
-const rename = require('./bin/rename');
-const icon = require('./bin/icon');
-const splash = require('./bin/splash');
-const nav = require('./bin/navigation');
-const structure = require('./bin/structure');
-const assets = require('./bin/assets');
-const start = require("./bin/start");
+const f = {
+    rename: require('./bin/rename'),
+    icon: require('./bin/icon'),
+    splash: require('./bin/splash'),
+    nav: require('./bin/navigation'),
+    structure: require('./bin/structure'),
+    assets: require('./bin/assets'),
+    start: require("./bin/start"),
+}
 
+const argv = require('minimist')(process.argv.slice(2));
 
 async function setup() {
-    await start();
-    await rename();
-    await structure();
-    await assets();
-    await icon();
-    await nav();
-    await splash();
+    if(argv.s) {
+        f[argv.s]();
+        return
+    }
+    console.log("start");
+    await f.start();
+    console.log("rename");
+    await f.rename();
+    console.log("structure");
+    await f.structure();
+    console.log("assets");
+    await f.assets();
+    console.log("icon");
+    await f.icon();
+    console.log("nav");
+    await f.nav();
+    console.log("splash");
+    await f.splash();
 }
 
 setup();

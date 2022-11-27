@@ -1,11 +1,9 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const {regRep, androidSrc} = require('./utils');
+const {regRep, androidSrc, yamls} = require('./utils');
 const path = require('path');
 
-const [apk] = process.argv.slice(3);
-
-const pth = path.join(androidSrc, 'java', ...apk.split('.'));
+const pth = path.join(androidSrc, 'java', ...yamls.app.apk.split('.'));
 
 async function fileChanges() {
   await regRep(
@@ -31,7 +29,7 @@ async function fileChanges() {
 
 async function navigation() {
   const {stdout, stderr} = await exec(
-    'yarn add react-navigation react-native-screens react-native-safe-area-context',
+    'npm i react-navigation react-native-screens react-native-safe-area-context',
   );
   console.log('stdout:', stdout);
   console.log('stderr:', stderr);
